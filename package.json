@@ -1,0 +1,30 @@
+{
+  "name": "polar-api",
+  "version": "1.0.0",
+  "description": "Polar API for SI2 project",
+  "main": "app.js",
+  "scripts": {
+    "nodemon": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivan3101/Polar-API.git"
+  },
+  "keywords": [
+    "api",
+    "restapi",
+    "node",
+    "express"
+  ],
+  "author": "Ivan De Menezes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ivan3101/Polar-API/issues"
+  },
+  "homepage": "https://github.com/ivan3101/Polar-API#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongoose": "^5.0.6"
+  }
+}
