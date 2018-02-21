@@ -16,6 +16,25 @@ class ClientController extends userAbstract {
             .status(201)
             .json(client);
     }
+    async login(req, res) {
+        const client = await ClientModel.findOne({
+            'businessName': req.body.businessName
+        });
+        console.log(client);
+        if(await client.checkPassword(req.body.password)) {
+            res
+                .status(200)
+                .json({
+                    'message': 'Logueado'
+                })
+        } else {
+            res
+                .status(401)
+                .json({
+                    'message': 'No logueado'
+                })
+        }
+    }
 
 }
 

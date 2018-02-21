@@ -6,4 +6,8 @@ Router
     .route('/signup')
     .post((new Client).create);
 
+Router
+    .route('/signin')
+    .post((new Client).login);
+
 module.exports = Router;

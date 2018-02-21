@@ -1,4 +1,5 @@
 const Argon = require('argon2');
+const Bluebird = require('bluebird');
 const Mongoose = require('mongoose');
 const clientSchema = new Mongoose.Schema({
     'businessName': {
@@ -59,5 +60,23 @@ clientSchema.methods.toJSON = function() {
 clientSchema.methods.checkPassword = function(password) {
     return Argon.verify(this.hashedPassword, password);
 };
+
+clientSchema.pre('save', function() {
+    const rif = this.constructor.findOne({
+        'rif': this.rif
+    });
+    const businessName = this.constructor.findOne({
+        'businessName': this.businessName
+    });
+    Bluebird.all([rif, businessName]).then(values => {
+        if (values[0]) {
+            console.log('Ya existe rif')
+        }
+        if (values[1]) {
+            console.log('Ya existe nombre')
+        }
+    });
+    return next();
+});
 
 module.exports = Mongoose.model('Client', clientSchema);
