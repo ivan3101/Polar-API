@@ -17,6 +17,12 @@ if (App.get('ENV') === 'development') {
 }
 App.use(Helmet());
 App.use(BodyParser.json());
+App.use(BodyParser.urlencoded({
+    extended: false
+}));
 
+// Routes
 App.use('/', Routes);
+
+// Starting server
 App.listen(PORT, () => console.log(`API is running in port: ${PORT}`));
