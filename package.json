@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/ivan3101/Polar-API#readme",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "boom": "^7.1.1",
     "express": "^4.16.2",
