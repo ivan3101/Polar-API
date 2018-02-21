@@ -1,5 +1,6 @@
 // Establishing connection with the database
 require('./API/Config/db_connection');
+
 // Imports
 const Express = require('express');
 const App = Express();
