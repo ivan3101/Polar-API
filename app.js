@@ -7,6 +7,7 @@ const App = Express();
 const Morgan = require('morgan');
 const Helmet = require('helmet');
 const BodyParser = require('body-parser');
+const Passport = require('passport');
 const Routes = require('./API/Routes');
 const PORT = process.env.PORT || 3000;
 
@@ -21,6 +22,7 @@ App.use(BodyParser.json());
 App.use(BodyParser.urlencoded({
     extended: false
 }));
+App.use(Passport.initialize());
 
 // Routes
 App.use('/', Routes);
