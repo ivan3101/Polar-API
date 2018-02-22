@@ -63,10 +63,12 @@ clientSchema.methods.checkPassword = function(password) {
 
 clientSchema.pre('save', function() {
     const rif = this.constructor.findOne({
-        'rif': this.rif
+        'rif': this.rif,
+        'isActive': true
     });
     const businessName = this.constructor.findOne({
-        'businessName': this.businessName
+        'businessName': this.businessName,
+        'isActive': true
     });
     Bluebird.all([rif, businessName]).then(values => {
         if (values[0]) {
