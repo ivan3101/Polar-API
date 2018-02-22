@@ -68,7 +68,6 @@ clientSchema.pre('save', function() {
     });
     const businessName = this.constructor.findOne({
         'businessName': this.businessName,
-        'isActive': true
     });
     Bluebird.all([rif, businessName]).then(values => {
         if (values[0]) {
