@@ -1,6 +1,5 @@
 const Argon = require('argon2');
 const Mongoose = require('mongoose');
-const Bluebird = require('bluebird');
 const employeeSchema = new Mongoose.Schema({
     'name': {
         type: String,
@@ -8,10 +7,6 @@ const employeeSchema = new Mongoose.Schema({
     },
     'cedula': {
         type: Number,
-        required: true
-    },
-    'username': {
-        type: String,
         required: true
     },
     'hashedPassword': {
@@ -47,24 +42,14 @@ employeeSchema.methods.checkPassword = function(password) {
     return Argon.verify(this.hashedPassword, password);
 };
 
-employeeSchema.pre('save', function() {
+employeeSchema.pre('save', async function() {
     const email = this.constructor.findOne({
         'email': this.email,
         'isActive': true
     });
-    const username = this.constructor.findOne({
-        'username': this.username,
-        'isActive': true
-    });
-
-    Bluebird.all([email, username]).then(values => {
-        if (values[0]) {
-            console.log('Ya existe email')
-        }
-        if (values[1]) {
-            console.log('Ya existe nombre de usuario')
-        }
-    });
+    if (await email) {
+        console.log('Ya existe email');
+    }
     return next();
 });
 
