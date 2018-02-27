@@ -42,11 +42,6 @@ const clientSchema = new Mongoose.Schema({
     }
 });
 
-clientSchema.virtual('password')
-    .get(function() {
-        return this.hashedPassword;
-    });
-
 clientSchema.methods.encryptPassword =  function(password) {
     return Argon.hash(password, {
         type: Argon.argon2id
