@@ -58,4 +58,4 @@ ProductSchema.pre('save', async function() {
    }
 });
 
-module.exports = Mongoose.Model('Product', ProductSchema);
+module.exports = Mongoose.model('Product', ProductSchema);
