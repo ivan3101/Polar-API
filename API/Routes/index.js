@@ -4,6 +4,6 @@ const authRoutes = require('./Auth/auth.routes');
 const clientRoutes = require('./Client/client.routes');
 
 Router.use('/auth', authRoutes);
-Router.use('/client', clientRoutes);
+Router.use('/clients', clientRoutes);
 
 module.exports = Router;

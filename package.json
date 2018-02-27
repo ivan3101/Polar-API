@@ -25,6 +25,7 @@
   "homepage": "https://github.com/ivan3101/Polar-API#readme",
   "dependencies": {
     "argon2": "^0.17.2",
+    "auto-bind-inheritance": "^1.0.6",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "boom": "^7.1.1",

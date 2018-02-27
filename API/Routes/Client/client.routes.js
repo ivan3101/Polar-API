@@ -1,15 +1,17 @@
 const Express = require('express');
 const Router = Express.Router();
-const Client = require('../../Controllers/client.controller');
+const ClientClass = require('../../Controllers/client.controller');
+const Client = new ClientClass();
 
 Router
     .route('/')
-    .get(Client.getAllClients);
+    .get(Client.getAll)
+    .post(Client.create);
 
 Router
-    .route('/:clientId')
-    .get(Client.getSingleClient)
-    .put((new Client).modify)
-    .delete((new Client).delete);
+    .route('/:id')
+    .get(Client.getSingle)
+    .put(Client.modify)
+    .delete(Client.delete);
 
 module.exports = Router;
