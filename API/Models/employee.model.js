@@ -50,7 +50,7 @@ employeeSchema.pre('save', async function() {
     if (await email) {
         console.log('Ya existe email');
     }
-    return next();
+    // return next();
 });
 
 module.exports = Mongoose.model('Employee', employeeSchema);

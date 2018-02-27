@@ -16,6 +16,10 @@ const clientSchema = new Mongoose.Schema({
             required: true
         }
     ],
+    'email': {
+        type: String,
+        required: true
+    },
     'rif': {
         type: String,
         required: true

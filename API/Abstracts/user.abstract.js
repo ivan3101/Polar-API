@@ -20,7 +20,7 @@ class User {
 
     async login(req, res) {
         const document = await this.mongooseModel.findOne({
-            'businessName': req.body.businessName,
+            'email': req.body.email,
             'isActive': true
         });
         if(await document.checkPassword(req.body.password)) {
@@ -29,7 +29,7 @@ class User {
                 res
                     .status(200)
                     .json({
-                        'document': document,
+                        'user': document,
                         'token': token
                     })
             }

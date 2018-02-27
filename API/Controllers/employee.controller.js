@@ -1,8 +1,10 @@
-const userAbstract = require('../Abstracts/user.abstract');
+const User = require('../Abstracts/user.abstract');
 const EmployeeModel = require('../Models/employee.model');
 
-class EmployeeController extends userAbstract {
+class EmployeeController extends User {
     constructor() {
         super(EmployeeModel);
     }
 }
+
+module.exports = EmployeeController;

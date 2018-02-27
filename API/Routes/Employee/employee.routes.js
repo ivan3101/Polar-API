@@ -1,16 +1,17 @@
 const Express = require('express');
 const Router = Express.Router();
-const ClientClass = require('../../Controllers/client.controller');
-const Client = new ClientClass();
 const EmployeeClass = require('../../Controllers/employee.controller');
 const Employee = new EmployeeClass();
 
 Router
-    .route('/clients')
-    .post(Client.login);
+    .route('/')
+    .get(Employee.getAll)
+    .post(Employee.create);
 
 Router
-    .route('/employees')
-    .post(Employee.login);
+    .route('/:id')
+    .get(Employee.getSingle)
+    .put(Employee.modify)
+    .delete(Employee.delete);
 
 module.exports = Router;
