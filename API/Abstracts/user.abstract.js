@@ -2,6 +2,7 @@ const Bluebird = require('bluebird');
 const JwtSign = Bluebird.Promise.promisify(require('jsonwebtoken').sign);
 const Secret = require('../Config/secret');
 const Autobind = require('auto-bind-inheritance');
+const Boom = require('boom');
 
 class User {
     constructor(mongooseModel) {
@@ -13,7 +14,7 @@ class User {
         const document = new this.mongooseModel(req.body);
         document.hashedPassword = await document.encryptPassword(req.body.password);
         await document.save();
-        res
+        return res
             .status(201)
             .json(document);
     }
@@ -23,10 +24,11 @@ class User {
             'email': req.body.email,
             'isActive': true
         });
-        if(await document.checkPassword(req.body.password)) {
-            const token = await JwtSign(document.toJSON(), Secret.secret);
+        if (!document) throw Boom.unauthorized('Correo o contraseña incorrectos');
+        if (await document.checkPassword(req.body.password)) {
+            const token = await JwtSign(document.toJSON(), Secret.secret, {'expiresIn': '24h'});
             if (token) {
-                res
+               return res
                     .status(200)
                     .json({
                         'user': document,
@@ -34,11 +36,7 @@ class User {
                     })
             }
         } else {
-            res
-                .status(401)
-                .json({
-                    'message': 'No logueado'
-                })
+            throw Boom.unauthorized('Correo o contraseña incorrectos');
         }
     }
 
@@ -48,7 +46,7 @@ class User {
             '_id': documentId,
             'isActive': true
         }, { $set: req.body });
-        res
+        return res
             .status(204)
             .json();
     }
@@ -59,7 +57,7 @@ class User {
             '_id': documentId,
             'isActive': true
         }, { $set: { 'isActive': false } });
-        res
+        return res
             .status(204)
             .json();
     }
@@ -72,7 +70,8 @@ class User {
         })
             .skip((quantity * page) - quantity)
             .limit(+quantity);
-        res
+        if (!document.length) throw Boom.notFound('Recurso no encontrado');
+        return res
             .status(200)
             .json(documents);
     }
@@ -83,7 +82,8 @@ class User {
             '_id': documentId,
             'isActive': true
         });
-        res
+        if (!document) throw Boom.notFound('Recurso no encontrado');
+        return res
             .status(200)
             .json(document);
     }

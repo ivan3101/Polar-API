@@ -2,16 +2,17 @@ const Express = require('express');
 const Router = Express.Router();
 const EmployeeClass = require('../../Controllers/employee.controller');
 const Employee = new EmployeeClass();
+const { handleAsyncExceptions } = require('../../Errors');
 
 Router
     .route('/')
-    .get(Employee.getAll)
-    .post(Employee.create);
+    .get(handleAsyncExceptions(Employee.getAll))
+    .post(handleAsyncExceptions(Employee.create));
 
 Router
     .route('/:id')
-    .get(Employee.getSingle)
-    .put(Employee.modify)
-    .delete(Employee.delete);
+    .get(handleAsyncExceptions(Employee.getSingle))
+    .put(handleAsyncExceptions(Employee.modify))
+    .delete(handleAsyncExceptions(Employee.delete));
 
 module.exports = Router;

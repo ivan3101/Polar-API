@@ -1,13 +1,26 @@
 const Argon = require('argon2');
+const Bluebird = require('bluebird');
+const Boom = require('boom');
+const Validators = require('../Validators');
 const Mongoose = require('mongoose');
 const employeeSchema = new Mongoose.Schema({
     'name': {
         type: String,
-        required: true
+        required: [true, 'El nombre del empleado es requerido'],
+        trim: true,
+        validate: {
+            validator: Validators.onlyAlphaAndSpaces,
+            message: 'El nombre del empleado solo puede contener letras'
+        }
     },
     'cedula': {
-        type: Number,
-        required: true
+        type: String,
+        required: [true, 'La cedula del empleado es requerida'],
+        trim: true,
+        validate: {
+            validator: Validators.cedula,
+            message: 'Debe ingresar una cedula valida'
+        }
     },
     'hashedPassword': {
         type: String,
@@ -15,7 +28,11 @@ const employeeSchema = new Mongoose.Schema({
     },
     'email': {
         type: String,
-        required: true
+        required: [true, 'El correo electronico del empleado es requerido'],
+        validate: {
+            validator: Validators.email,
+            message: 'Debe ingresar un correo electronico valido'
+        }
     },
     'isActive': {
         type: Boolean,
@@ -42,15 +59,20 @@ employeeSchema.methods.checkPassword = function(password) {
     return Argon.verify(this.hashedPassword, password);
 };
 
-employeeSchema.pre('save', async function() {
+employeeSchema.pre('save', function(next) {
     const email = this.constructor.findOne({
         'email': this.email,
         'isActive': true
     });
-    if (await email) {
-        console.log('Ya existe email');
-    }
-    // return next();
+    const cedula = this.constructor.findOne({
+        'cedula': this.cedula,
+        'isActive': true
+    });
+    Bluebird.all([email, cedula]).then(values => {
+        if (values[0]) return next(Boom.conflict('Ya existe un empleado con ese correo electronico en esta pagina'));
+        if (values[1]) return next(Boom.conflict('Ya existe un empleado con esa cedula registrado en esta pagina'));
+        return next();
+    })
 });
 
 module.exports = Mongoose.model('Employee', employeeSchema);

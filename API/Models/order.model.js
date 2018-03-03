@@ -1,4 +1,5 @@
 const Uuid = require('uuid/v4');
+const { price, address } = require('../Validators');
 const Mongoose = require('mongoose');
 const OrderSchema = new Mongoose.Schema({
     'orderId': {
@@ -14,12 +15,21 @@ const OrderSchema = new Mongoose.Schema({
         ref: 'Product'
     }],
     'totalPrice': {
-        type: Number,
-        required: true
+        type: String,
+        required: true,
+        trim: true,
+        validate: {
+            validator: price,
+            message: 'Debe ingresar un precio total con un formato valido'
+        }
     },
     'shippingAddress': {
         type: String,
-        required: true
+        required: [true, 'La direccion de envio es requerida'],
+        validate: {
+            validator: address,
+            address: 'La direccion de envio solo puede contener letras y numeros'
+        }
     },
     'status': {
         type: String,

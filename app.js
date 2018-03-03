@@ -9,6 +9,7 @@ const Helmet = require('helmet');
 const BodyParser = require('body-parser');
 const Passport = require('passport');
 const Routes = require('./API/Routes');
+const ErrorHandlers = require('./API/Errors');
 const PORT = process.env.PORT || 3000;
 
 // Middlewares
@@ -26,6 +27,10 @@ App.use(Passport.initialize());
 
 // Routes
 App.use('/', Routes);
+
+// Error handlers
+App.use(ErrorHandlers.validationError);
+App.use(ErrorHandlers.errorHandler);
 
 // Starting server
 App.listen(PORT, () => console.log(`API is running in port: ${PORT}`));
