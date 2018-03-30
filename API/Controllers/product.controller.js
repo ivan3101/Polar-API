@@ -34,7 +34,11 @@ class ProductController {
     async getAll(req, res) {
         const quantity = 10;
         const page = req.query.page || 1;
+        const brand = decodeURIComponent(req.query.brand) || '';
+        const available = eval(req.query.available)? {$gt: 0} : 0;
         const products = await Product.find({
+            'stock': available,
+            'brand': RegExp(brand, 'i'),
             'isActive': true
         })
             .skip((quantity * page) - quantity)

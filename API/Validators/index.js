@@ -2,6 +2,10 @@ module.exports.onlyAlphaAndSpaces = function(v) {
     return /^[a-zA-Z\s]+$/.test(v);
 };
 
+module.exports.alphaSpacesDots = function(v) {
+    return /^[a-zA-Z.\s]+$/.test(v);
+}
+
 module.exports.onlyNumbers = function(v) {
     return /^[0-9]+$/.test(v);
 };

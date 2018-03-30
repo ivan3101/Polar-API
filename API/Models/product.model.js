@@ -8,19 +8,13 @@ const ProductSchema = new Mongoose.Schema({
         validate: {
             validator: Validators.onlyAlphaAndSpaces,
             message: 'El nombre del producto solo puede contener letras'
-        }
-    },
-    'size': {
-        type: String,
-        required: [true, 'El tamaño del producto es requerido'],
-        validate: {
-            validator: Validators.size,
-            message: 'Debe ingresar el peso del producto con el formato Ancho x Alto'
-        }
+        },
+        trim: true
     },
     'imagePath': {
         type: String,
         required: [true, 'La imagen del producto es requerida'],
+        trim: true
     },
     'weight': {
         type: String,
@@ -28,27 +22,13 @@ const ProductSchema = new Mongoose.Schema({
         validate: {
             validator: Validators.price,
             message: 'Debe ingresar un peso valido'
-        }
-    },
-    'expeditionDate': {
-        type: Date,
-        required: [true, 'La fecha de expedición del producto es requerida'],
-        validate: {
-            validator: Validators.expDate,
-            message: 'Debe ingresar una fecha de expedición con el formato MM/YYYY'
-        }
-    },
-    'expirationDate': {
-        type: Date,
-        required: [true, 'La fecha de expiración del producto es requerida'],
-        validate: {
-            validator: Validators.expDate,
-            message: 'Debe ingresar una fecha de expiración con el formator MM/YYYY'
-        }
+        },
+        trim: true
     },
     'stock': {
-        type: String,
-        required: [true, 'El stock del producto es requerido']
+        type: Number,
+        required: [true, 'El stock del producto es requerido'],
+        trim: true
     },
     'price': {
         type: Number,
@@ -57,6 +37,15 @@ const ProductSchema = new Mongoose.Schema({
             validator: Validators.price,
             message: 'Debe ingresar un precio valido'
         }
+    },
+    'brand': {
+        type: String,
+        required: [true, 'La marca del producto es requerida'],
+        validate: {
+            validator: Validators.alphaSpacesDots,
+            message: 'Debe ingresar una marca valida'
+        },
+        trim: true
     },
     'registerDate': {
         type: Date,
