@@ -31,6 +31,7 @@ App.use(Passport.initialize());
 App.use('/api', Routes);
 
 // Error handlers
+App.use(ErrorHandlers.unauthorizedError);
 App.use(ErrorHandlers.validationError);
 App.use(ErrorHandlers.errorHandler);
 

@@ -5,7 +5,10 @@ module.exports.handleAsyncExceptions = fn => (req, res, next) => {
         if (!err.isBoom) {
             if (err.name === 'ValidationError') {
                 return next(err);
-            } else {
+            } else if (err.name === 'TokenExpiredError') {
+                return next(err);
+            }
+            else {
                 return next(Boom.badImplementation(err));
             }
         }
@@ -14,7 +17,11 @@ module.exports.handleAsyncExceptions = fn => (req, res, next) => {
 };
 
 module.exports.unauthorizedError = (err, req, res, next) => {
-  return next(Boom.unauthorized('No tienes los permisos para acceder a esta sección'));
+    if (err.name === 'TokenExpiredError') {
+        return next(Boom.unauthorized('No tiene permisos para acceder a esta area'));
+    } else {
+        next(err);
+    }
 };
 
 module.exports.validationError = (err, req, res, next) => {

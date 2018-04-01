@@ -92,16 +92,23 @@ clientSchema.methods.checkPassword = function(password) {
 };
 
 clientSchema.pre('save', function(next) {
+    console.log(this.rif);
     const rif = this.constructor.findOne({
-        'rif': this.rif,
+        'rif': new RegExp('^' + this.rif + '$', 'i'),
         'isActive': true
     });
     const businessName = this.constructor.findOne({
-        'businessName': this.businessName,
+        'businessName': new RegExp('^' + this.businessName + '$', 'i'),
+        'isActive': true
     });
-    Bluebird.all([rif, businessName]).then(values => {
+    const email = this.constructor.findOne({
+        'email': new RegExp('^' + this.email + '$', 'i'),
+        'isActive': true
+    });
+    Bluebird.all([rif, businessName, email]).then(values => {
         if (values[0]) return next(Boom.conflict('Ya esta registrado un negocio con ese RIF en esta pagina.'));
         if (values[1]) return next(Boom.conflict('Ya esta registrado un negocio con ese nombre en esta pagina.'));
+        if (values[2]) return next(Boom.conflict('Ya esta registrado un negocio con ese correo electronico en esta pagina.'));
         return next();
     });
 });
