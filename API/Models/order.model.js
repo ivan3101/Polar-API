@@ -10,13 +10,14 @@ const OrderSchema = new Mongoose.Schema({
         type: Mongoose.Schema.Types.ObjectId,
         ref: 'Client'
     },
-    'products': [{
-        type: Mongoose.Schema.Types.ObjectId,
+    'products': {
+        type: [Mongoose.Schema.Types.ObjectId]
+        ,
         ref: 'Product'
-    }],
+    },
     'totalPrice': {
         type: String,
-        required: true,
+        required: [true, 'El precio total de la compra es requerido'],
         trim: true,
         validate: {
             validator: price,
@@ -33,11 +34,13 @@ const OrderSchema = new Mongoose.Schema({
     },
     'status': {
         type: String,
-        enum: ['Shipped', 'Processing', 'Canceled'],
-        default: 'Processing'
+        enum: ['Entregado', 'En espera', 'Cancelado'],
+        default: 'En espera'
     },
     'dateOrdered': {
         type: Date,
         default: Date.now()
     }
 });
+
+module.exports = Mongoose.model('Order', OrderSchema);

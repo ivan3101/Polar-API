@@ -63,6 +63,44 @@ const clientSchema = new Mongoose.Schema({
             message: 'Debe ingresar un numero de telefono con un formato valido.'
         }
     },
+    'payMethod': [{
+        'cardholderName': {
+            type: String,
+            trim: true,
+            required: [true, 'El nombre del dueño de la tarjeta es necesario'],
+            validate: {
+                validator: Validators.onlyAlphaAndSpaces,
+                message: 'Debe ingresar un nombre valido'
+            },
+        },
+        'cardNumber': {
+            type: String,
+            validate: {
+                validator: Validators.cards,
+                message: 'Debe ingresar un numero de tarjeta valido'
+            },
+            trim: true,
+            required: [true, 'El numero de la tarjeta es requerido']
+        },
+        'expDate': {
+            type: Date,
+            required: [true, 'La fecha de vencimiento de la tarjeta es requerido']
+        },
+        'cedula': {
+            type: String,
+            required: [true, 'La cedula asociada a la tarjeta es requerido'],
+            trim: true,
+            validate: {
+                validator: Validators.cedula,
+                message: 'Debe ingresar una cedula valida'
+            }
+        },
+        'csc': {
+            type: Number,
+            required: [true, 'El CSC es requerido'],
+            trim: true
+        }
+    }],
     'registerDate': {
         type: Date,
         default: Date.now()
@@ -82,6 +120,7 @@ clientSchema.methods.encryptPassword =  function(password) {
 clientSchema.methods.toJSON = function() {
     const obj = this.toObject();
     delete obj.hashedPassword;
+    delete obj.payMethod;
     delete obj.__v;
     delete obj.isActive;
     return obj;

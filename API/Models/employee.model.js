@@ -34,6 +34,11 @@ const employeeSchema = new Mongoose.Schema({
             message: 'Debe ingresar un correo electronico valido'
         }
     },
+    'level': {
+        type: String,
+        enum: ['admin', 'other'],
+        default: 'other'
+    },
     'isActive': {
         type: Boolean,
         required: true,

@@ -3,6 +3,7 @@ const Boom = require('boom');
 module.exports.handleAsyncExceptions = fn => (req, res, next) => {
     fn(req, res, next).catch((err) => {
         if (!err.isBoom) {
+            console.log(err)
             if (err.name === 'ValidationError') {
                 return next(err);
             } else if (err.name === 'TokenExpiredError') {
@@ -18,7 +19,7 @@ module.exports.handleAsyncExceptions = fn => (req, res, next) => {
 
 module.exports.unauthorizedError = (err, req, res, next) => {
     if (err.name === 'TokenExpiredError') {
-        return next(Boom.unauthorized('No tiene permisos para acceder a esta area'));
+
     } else {
         next(err);
     }

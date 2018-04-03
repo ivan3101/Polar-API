@@ -32,7 +32,7 @@ class User {
                     .status(200)
                     .json({
                         'user': document,
-                        'token': token
+                        'token': token,
                     })
             }
         } else {
